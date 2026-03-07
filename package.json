@@ -13,13 +13,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/github-young/zotero-better-authors.git"
+    "url": "git+https://github.com/erbiaoger/zotero-better-authors.git"
   },
-  "author": "github-young",
+  "author": "erbiaoger",
   "bugs": {
-    "url": "https://github.com/github-young/zotero-better-authors/issues"
+    "url": "https://github.com/erbiaoger/zotero-better-authors/issues"
   },
-  "homepage": "https://github.com/github-young/zotero-better-authors#readme",
+  "homepage": "https://github.com/erbiaoger/zotero-better-authors#readme",
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "start": "zotero-plugin serve",
