@@ -30,7 +30,6 @@ export class BasicBetterAuthorsFactory {
     const prefOptions = {
       pluginID: config.addonID,
       src: rootURI + "content/preferences.xhtml",
-      scripts: [rootURI + "content/preferences.js"],
       label: getString("prefs-title"),
       image: `chrome://${config.addonRef}/content/icons/favicon.png`,
       defaultXUL: true,
@@ -42,6 +41,15 @@ export class BasicBetterAuthorsFactory {
 type NameOrderType = "firstlast" | "lastfirst";
 
 export class UIBetterAuthorsFactory {
+  static getHighlightedCreatorIndex(
+    creators: _ZoteroTypes.Item.Creator[],
+  ): number {
+    if (creators.length <= 1) {
+      return 0;
+    }
+    return 1;
+  }
+
   static getAuthorNameWithNameOrder(
     nameorder: NameOrderType,
     firstName: string,
@@ -146,6 +154,8 @@ export class UIBetterAuthorsFactory {
     const sepOmitted: string = getPref("sep-omitted-authors");
     const indicatorLastAuthor: string = getPref("indicator-for-lastauthor");
     const indicatorPosition: string = getPref("indicator-position");
+    const highlightedAuthorIndex = this.getHighlightedCreatorIndex(authors);
+    const remainingAuthorsCount = authors.length - (authors.length > 1 ? 1 : 0);
     // get first n authors
     // Initialize the first author list
     const firstAuthorsList: string[] = [];
@@ -156,40 +166,33 @@ export class UIBetterAuthorsFactory {
       if (firstAuthorNumber !== undefined) {
         firstN = firstAuthorNumber as number;
       }
-      // deal with only one author
-      if (authors.length === 1) {
+      let displayedFirstAuthorsCount = 0;
+      for (let i = 0; i < authors.length; i++) {
+        if (authors.length > 1 && i === highlightedAuthorIndex) {
+          continue;
+        }
+
+        if (firstN > 0 && displayedFirstAuthorsCount >= firstN) {
+          break;
+        }
+
         const authorDisplayed: string = this.displayAuthorName(
           authors,
-          0,
+          i,
           sepIntra,
           sepIntraCJK,
         );
         firstAuthorsList.push(authorDisplayed);
-      } else {
-        // here: length -1 means excluding the last author
-        for (let i = 0; i <= authors.length - 2; i++) {
-          // firstN === 0 is for all first authors
-          if (i < firstN || firstN === 0) {
-            const authorDisplayed: string = this.displayAuthorName(
-              authors,
-              i,
-              sepIntra,
-              sepIntraCJK,
-            );
-            firstAuthorsList.push(authorDisplayed);
-          } else {
-            break;
-          }
-        }
+        displayedFirstAuthorsCount += 1;
       }
     }
-    // get last author
+    // get highlighted author, defaulting to the second author
     const includeLastAuthorFlag = getPref("include-lastauthor-in-list");
     let lastAuthorDisplayed: string = "";
     if (includeLastAuthorFlag) {
       lastAuthorDisplayed = this.displayAuthorName(
         authors,
-        authors.length - 1,
+        highlightedAuthorIndex,
         sepIntra,
         sepIntraCJK,
       );
@@ -216,7 +219,7 @@ export class UIBetterAuthorsFactory {
         // in case of only one author
         displayedString = lastAuthorWithIndicator;
       } else {
-        if (firstN > 0 && firstN <= authors.length - 2) {
+        if (firstN > 0 && firstN < remainingAuthorsCount) {
           displayedString += sepInter + sepOmitted + sepInter;
         } else {
           displayedString += sepInter;
@@ -299,9 +302,11 @@ export class UIBetterAuthorsFactory {
           if (contributors.length > 0) {
             const sepIntra = getPref("sep-intra-author");
             const sepIntraCJK = getPref("sep-intra-author-cjk");
+            const highlightedContributorIndex =
+              this.getHighlightedCreatorIndex(contributors);
             lastAuthorDisplayed = this.displayAuthorName(
               contributors,
-              0,
+              highlightedContributorIndex,
               sepIntra,
               sepIntraCJK,
             );
@@ -314,9 +319,11 @@ export class UIBetterAuthorsFactory {
           if (authors.length > 0) {
             const sepIntra = getPref("sep-intra-author");
             const sepIntraCJK = getPref("sep-intra-author-cjk");
+            const highlightedAuthorIndex =
+              this.getHighlightedCreatorIndex(authors);
             lastAuthorDisplayed = this.displayAuthorName(
               authors,
-              authors.length - 1,
+              highlightedAuthorIndex,
               sepIntra,
               sepIntraCJK,
             );

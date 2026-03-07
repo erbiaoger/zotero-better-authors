@@ -1,9 +1,10 @@
-<linkset>
+<linkset xmlns:html="http://www.w3.org/1999/xhtml">
   <html:link rel="localization" href="__addonRef__-preferences.ftl" />
 </linkset>
 <vbox
+  xmlns:html="http://www.w3.org/1999/xhtml"
   id="zotero-prefpane-__addonRef__"
-  onload="Zotero.__addonInstance__.hooks.onPrefsEvent('load', {window})"
+  onload="Zotero.__addonInstance__.hooks.onPrefsEvent('load', { window })"
 >
   <groupbox>
     <label>
@@ -22,7 +23,6 @@
           id="zotero-prefpane-__addonRef__-include-firstauthors-in-list"
           preference="include-firstauthors-in-list"
           data-l10n-id="pref-include-firstauthors-in-list"
-          oncommand="Betterauthors.Preferences.updateFirstAuthorsSettingsUI()"
         />
         <hbox align="center">
           <label data-l10n-id="pref-first-n-authors-prev"></label>
@@ -184,14 +184,13 @@
       <html:label id="zotero-prefpane-__addonRef__-authors-format-preview" />
     </hbox>
   </groupbox>
-</vbox>
-
-<vbox onload="Betterauthors.Preferences.init()">
-  <label>
-    <html:h3 data-l10n-id="pref-label-about"></html:h3>
-  </label>
-  <label
-    data-l10n-id="pref-help"
-    data-l10n-args='{"time": "__buildTime__","name": "__addonName__","version":"__buildVersion__"}'
-  ></label>
+  <groupbox>
+    <label>
+      <html:h3 data-l10n-id="pref-label-about"></html:h3>
+    </label>
+    <label
+      data-l10n-id="pref-help"
+      data-l10n-args='{"time": "__buildTime__","name": "__addonName__","version":"__buildVersion__"}'
+    ></label>
+  </groupbox>
 </vbox>
