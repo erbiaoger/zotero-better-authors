@@ -1,0 +1,13 @@
+diff --git a/dist/shared/zotero-plugin-scaffold.qsx_2VJx.mjs b/dist/shared/zotero-plugin-scaffold.qsx_2VJx.mjs
+index 3fe6475411f230c7328c4b3035e9e8b0c150d2d6..52f24ea5ad52a296d2dc77972b4a09824f79f579 100644
+--- a/dist/shared/zotero-plugin-scaffold.qsx_2VJx.mjs
++++ b/dist/shared/zotero-plugin-scaffold.qsx_2VJx.mjs
+@@ -35,7 +35,7 @@ const SYMBOLS = {
+   TIP: stdout.blue("\u2192"),
+   ERROR: stdout.bgRed(" ERROR "),
+   WARN: stdout.bgYellow(" WARN "),
+-  DEBUG: stdout.grey("\u2699"),
++  DEBUG: stdout.gray("\u2699"),
+   NONE: ""
+ };
+ const DEFAULT_OPTIONS = {

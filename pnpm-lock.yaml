@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  zotero-plugin-scaffold@0.8.2:
+    hash: 97028298ba31aa848f38d2b4cffd055d42a69d608425e2afc7d35f530ab825bc
+    path: patches/zotero-plugin-scaffold@0.8.2.patch
+
 importers:
 
   .:
@@ -29,7 +34,7 @@ importers:
         version: 5.9.3
       zotero-plugin-scaffold:
         specifier: ^0.8.2
-        version: 0.8.2
+        version: 0.8.2(patch_hash=97028298ba31aa848f38d2b4cffd055d42a69d608425e2afc7d35f530ab825bc)
       zotero-types:
         specifier: ^4.1.0-beta.4
         version: 4.1.0-beta.4
@@ -2364,7 +2369,7 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zotero-plugin-scaffold@0.8.2:
+  zotero-plugin-scaffold@0.8.2(patch_hash=97028298ba31aa848f38d2b4cffd055d42a69d608425e2afc7d35f530ab825bc):
     dependencies:
       '@fluent/syntax': 0.19.0
       '@swc/core': 1.15.2

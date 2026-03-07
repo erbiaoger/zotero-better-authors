@@ -20,6 +20,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          fetch-tags: true
+
+      - name: Fetch all tags
+        run: git fetch --force --tags
+
+      - name: Validate tag matches package version
+        run: |
+          PKG_VERSION="$(grep -m1 '\"version\"' package.json | sed -E 's/.*\"version\": \"([^\"]+)\".*/\1/')"
+          if [ "${GITHUB_REF_NAME}" != "v${PKG_VERSION}" ]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} does not match package.json version v${PKG_VERSION}"
+            exit 1
+          fi
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
