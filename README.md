@@ -1,11 +1,11 @@
 # Zotero Better Authors （Zotero 更好作者）
 
-[![zotero target version](https://img.shields.io/badge/Zotero-7-green?style=flat-square&logo=zotero&logoColor=CC2936)](https://www.zotero.org)
+[![zotero target version](https://img.shields.io/badge/Zotero-7--9-green?style=flat-square&logo=zotero&logoColor=CC2936)](https://www.zotero.org)
 [![Using Zotero Plugin Template](https://img.shields.io/badge/Using-Zotero%20Plugin%20Template-blue?style=flat-square&logo=github)](https://github.com/windingwind/zotero-plugin-template)
 
 [中文说明](./docs/README_CN.md)
 
-This is a simple plugin for [Zotero](https://www.zotero.org/) 7. See this [announcement](https://forums.zotero.org/discussion/105094/announcing-the-zotero-7-beta) for Zotero 7 Beta.
+This is a simple plugin for [Zotero](https://www.zotero.org/) 7, 8, and 9.
 
 ## Installation
 
@@ -24,7 +24,7 @@ This is a simple plugin for [Zotero](https://www.zotero.org/) 7. See this [annou
 
 ## Usage & Screenshots
 
-This plugin comes with a self-explanatory settings panel in Zotero 7 settings. An example of the displayed authors and corresponding settings (with English and Chinese support) is given in the screenshot.
+This plugin comes with a self-explanatory settings panel in Zotero settings. An example of the displayed authors and corresponding settings (with English and Chinese support) is given in the screenshot.
 
 Displayed authors
 

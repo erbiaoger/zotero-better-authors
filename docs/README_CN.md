@@ -1,9 +1,9 @@
 # Zotero Better Authors （Zotero更好作者）
 
-[![zotero target version](https://img.shields.io/badge/Zotero-7-green?style=flat-square&logo=zotero&logoColor=CC2936)](https://www.zotero.org)
+[![zotero target version](https://img.shields.io/badge/Zotero-7--9-green?style=flat-square&logo=zotero&logoColor=CC2936)](https://www.zotero.org)
 [![Using Zotero Plugin Template](https://img.shields.io/badge/Using-Zotero%20Plugin%20Template-blue?style=flat-square&logo=github)](https://github.com/windingwind/zotero-plugin-template)
 
-这是 Zotero 7 的一个简单插件。有关 Zotero 7 Beta 信息，请参考[这个声明](https://forums.zotero.org/discussion/105094/announcing-the-zotero-7-beta)。
+这是一个兼容 Zotero 7、8、9 的简单插件。
 
 ## 安装
 

@@ -1,27 +1,31 @@
 import { config } from "../../package.json";
 import { UIBetterAuthorsFactory } from "./betterAuthors";
 
+function getAuthorCreatorTypeID(): number {
+  return Zotero.CreatorTypes.getID("author");
+}
+
 const EXAMPLE_AUTHOR_LIST: _ZoteroTypes.Item.Creator[] = [
   {
-    creatorTypeID: 8,
+    creatorTypeID: getAuthorCreatorTypeID(),
     fieldMode: 0,
     firstName: "Alice",
     lastName: "Adams",
   },
   {
-    creatorTypeID: 8,
+    creatorTypeID: getAuthorCreatorTypeID(),
     fieldMode: 0,
     firstName: "Bob",
     lastName: "Brown",
   },
   {
-    creatorTypeID: 8,
+    creatorTypeID: getAuthorCreatorTypeID(),
     fieldMode: 0,
     firstName: "三",
     lastName: "张",
   },
   {
-    creatorTypeID: 8,
+    creatorTypeID: getAuthorCreatorTypeID(),
     fieldMode: 0,
     firstName: "四",
     lastName: "李",
