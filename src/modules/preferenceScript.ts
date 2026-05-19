@@ -1,8 +1,14 @@
 import { config } from "../../package.json";
 import { UIBetterAuthorsFactory } from "./betterAuthors";
 
-function getAuthorCreatorTypeID(): number {
-  return Zotero.CreatorTypes.getID("author");
+type CreatorTypeID = _ZoteroTypes.Item.Creator["creatorTypeID"];
+
+function getAuthorCreatorTypeID(): CreatorTypeID {
+  const creatorTypeID = Zotero.CreatorTypes.getID("author");
+  if (creatorTypeID === false) {
+    throw new Error("Creator type 'author' is unavailable.");
+  }
+  return creatorTypeID as CreatorTypeID;
 }
 
 const EXAMPLE_AUTHOR_LIST: _ZoteroTypes.Item.Creator[] = [

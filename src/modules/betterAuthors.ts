@@ -3,8 +3,14 @@ import { getString } from "../utils/locale";
 import { convertToInitials, determineCountry } from "./convertNames";
 import { getPref } from "../utils/prefs";
 
-function getAuthorCreatorTypeID(): number {
-  return Zotero.CreatorTypes.getID("author");
+type CreatorTypeID = _ZoteroTypes.Item.Creator["creatorTypeID"];
+
+function getAuthorCreatorTypeID(): CreatorTypeID {
+  const creatorTypeID = Zotero.CreatorTypes.getID("author");
+  if (creatorTypeID === false) {
+    throw new Error("Creator type 'author' is unavailable.");
+  }
+  return creatorTypeID as CreatorTypeID;
 }
 
 function betterAuthorsPlugin(
