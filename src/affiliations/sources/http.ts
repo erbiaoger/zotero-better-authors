@@ -19,6 +19,7 @@ export const zoteroHttpClient: HttpClient = {
       throw error;
     }
     const text = typeof xhr === "string" ? xhr : xhr?.responseText ?? xhr?.response ?? "";
-    return text ? JSON.parse(text) : {};
+    if (!text) return {};
+    try { return JSON.parse(text); } catch (_e) { return text; }
   },
 };

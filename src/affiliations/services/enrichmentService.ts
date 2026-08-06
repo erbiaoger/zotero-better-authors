@@ -83,6 +83,7 @@ export class AffiliationServiceImpl {
     const batchID = `aff-${Date.now().toString(36)}`;
     const items = (Zotero.Items.get(itemIDs) as Zotero.Item[]).filter((item) => item?.isTopLevelItem?.() && item.isRegularItem?.() && !item.deleted);
     const summary: BatchSummary = { batchID, total: items.length, cached: 0, succeeded: 0, needsReview: 0, noMatch: 0, failed: 0, cancelled: 0, openAlexRequests: 0, crossrefRequests: 0, grobidRequests: 0 };
+    const progress = new addon.data.ztoolkit.ProgressWindow("机构数据", { closeOnClick: false }).createLine({ text: `准备处理 ${items.length} 条`, progress: 0 }).show(-1);
     const key = String(getPref("openalex-api-key") || "").trim();
     if (!key) throw new Error("OpenAlex API Key 未配置，请在设置页填写。");
     const openalex = new OpenAlexClient(key, zoteroHttpClient);
@@ -148,7 +149,9 @@ export class AffiliationServiceImpl {
       if (status === "succeeded") { summary.succeeded += 1; await this.writeMirror(item, record); }
       else if (status === "needs_review") { summary.needsReview += 1; reviews.set(keyFor(item.libraryID, item.key), { itemID: item.id, identity, method: method || "openalex-title", score: confidence, institutions: firstAuthor(authorships)?.institutions || [], reason: reviewReason }); }
       else summary.noMatch += 1;
+      progress.changeLine({ text: `已处理 ${summary.succeeded + summary.needsReview + summary.noMatch}/${summary.total}`, progress: Math.round(((summary.succeeded + summary.needsReview + summary.noMatch) / Math.max(1, summary.total)) * 100) });
     }
+    progress.changeLine({ type: "success", text: `机构数据完成：成功 ${summary.succeeded}，待审核 ${summary.needsReview}`, progress: 100 }).startCloseTimer(5000);
     return batchID;
   }
 

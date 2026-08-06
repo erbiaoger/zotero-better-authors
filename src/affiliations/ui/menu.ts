@@ -43,7 +43,5 @@ export function openAffiliationDashboard(scope: DashboardScope): void {
 }
 
 export function openReviewQueue(): void {
-  const candidates = affiliationService.getReviewCandidates();
-  const lines = candidates.map((candidate) => `${candidate.identity.title}\n${candidate.identity.firstAuthor} — ${candidate.institutions.map((i) => i.name).join(", ") || "无机构"} (${candidate.score.toFixed(3)})`);
-  Zotero.getMainWindow().alert(lines.length ? `待审核 ${lines.length} 条：\n\n${lines.join("\n\n")}` : "当前没有待审核结果。");
+  Zotero.getMainWindow().openDialog(`${rootURI}content/affiliations/review.xhtml`, "betterauthors-affiliation-review", "chrome,dialog,resizable,centerscreen");
 }

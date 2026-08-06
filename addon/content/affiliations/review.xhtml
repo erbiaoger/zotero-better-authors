@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!DOCTYPE window>
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="机构待审核队列">
+  <script type="application/javascript" src="review.js"/>
+  <vbox flex="1" style="padding:16px; min-width:850px; min-height:500px;">
+    <label id="summary"/>
+    <richlistbox id="queue" flex="1"/>
+    <button label="关闭" oncommand="window.close()"/>
+  </vbox>
+</window>
