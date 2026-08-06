@@ -11,8 +11,7 @@ export async function registerAffiliationColumn(): Promise<void> {
     label: "第一作者机构",
     pluginID: config.addonID,
     enabledTreeIDs: ["main"],
-    width: "240px",
-    minWidth: 120,
+    flex: 0.8,
     dataProvider: (item: Zotero.Item | Zotero.Collection) => {
       // Item-tree rows can come from another Zotero window realm, so avoid
       // instanceof checks here. The synchronous column only needs getField.
@@ -27,16 +26,8 @@ export async function registerAffiliationColumn(): Promise<void> {
       // visually cover neighbouring columns.
       const element = doc.createElementNS("http://www.w3.org/1999/xhtml", "span");
       element.className = `cell ${column.className}`;
-      element.textContent = data;
+      element.innerText = data;
       element.title = data;
-      element.style.display = "block";
-      element.style.width = "100%";
-      element.style.maxWidth = "100%";
-      element.style.minWidth = "0";
-      element.style.boxSizing = "border-box";
-      element.style.overflow = "hidden";
-      element.style.textOverflow = "ellipsis";
-      element.style.whiteSpace = "nowrap";
       return element;
     },
   });
