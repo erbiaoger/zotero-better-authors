@@ -29,7 +29,7 @@ export function registerAffiliationMenus(): void {
     { tag: "menuitem", label: "强制更新选中条目", commandListener: () => void runSelected(true) },
     { tag: "menuitem", label: "补齐当前文库", commandListener: async () => { const pane: any = Zotero.getActiveZoteroPane?.(); const libraryID = pane?.getSelectedLibraryID?.(); if (libraryID) await affiliationService.enrichItems(await Zotero.Items.getAll(libraryID, true, false, true), { force: false, includeGrobid: true }); } },
     { tag: "menuitem", label: "补齐当前分类", commandListener: () => void runCollection() },
-    { tag: "menuitem", label: "打开机构地图", commandListener: () => openAffiliationDashboard({ kind: "library", libraryID: Zotero.getActiveZoteroPane?.().getSelectedLibraryID?.() }) },
+    { tag: "menuitem", label: "打开机构地图", commandListener: () => { const pane: any = Zotero.getActiveZoteroPane?.(); const collectionID = pane?.getSelectedCollection?.(true); openAffiliationDashboard(collectionID ? { kind: "collection", collectionID } : { kind: "library", libraryID: pane?.getSelectedLibraryID?.() }); } },
     { tag: "menuitem", label: "查看待审核结果", commandListener: () => openReviewQueue() },
     { tag: "menuitem", label: "清除机构数据", commandListener: async () => { if (Zotero.getMainWindow().confirm("清除当前文库的本地机构缓存？Extra 镜像不会自动删除。")) await affiliationService.clearRecords(Zotero.getActiveZoteroPane?.().getSelectedLibraryID?.()); } },
   ];

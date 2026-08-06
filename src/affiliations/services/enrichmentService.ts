@@ -172,7 +172,13 @@ export class AffiliationServiceImpl {
 
   async getDashboardData(options: DashboardOptions): Promise<any> {
     const records = await affiliationRepository.list(options.scope.libraryID);
-    const filtered = options.scope.itemIDs?.length ? records.filter((r) => options.scope.itemIDs!.some((id) => { try { return (Zotero.Items.get(id) as Zotero.Item).key === r.itemKey; } catch (_e) { return false; } })) : records;
+    let allowedKeys: Set<string> | undefined;
+    if (options.scope.itemIDs?.length) allowedKeys = new Set(options.scope.itemIDs.map((id) => (Zotero.Items.get(id) as Zotero.Item).key));
+    else if (options.scope.collectionID) {
+      const collection: any = Zotero.Collections.get(options.scope.collectionID);
+      allowedKeys = new Set((collection?.getChildItems?.(true, false) || []).map((id: number) => (Zotero.Items.get(id) as Zotero.Item).key));
+    }
+    const filtered = allowedKeys ? records.filter((r) => allowedKeys!.has(r.itemKey)) : records;
     return aggregateRecords(filtered, options);
   }
 
