@@ -21,6 +21,14 @@ describe("minimal journal abbreviation", () => {
     ).toBe("JGR");
   });
 
+  it("allows a manually entered Zotero abbreviation to override the mapping", () => {
+    expect(
+      getMinimalJournalAbbreviation(
+        item("Journal of Geophysical Research", "JGR Custom"),
+      ),
+    ).toBe("JGR Custom");
+  });
+
   it("keeps a compact section abbreviation", () => {
     expect(
       getMinimalJournalAbbreviation(

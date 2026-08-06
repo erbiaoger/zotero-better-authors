@@ -82,6 +82,10 @@ function compactExistingAbbreviation(value: string): string {
   const compact = trimmed.replace(/[^\p{Letter}\p{Number}]+/gu, "");
   if (/^[A-Z0-9]{2,12}$/.test(compact)) return compact;
 
+  // A user-entered spaced form such as “JGR Solid Earth” is already the
+  // intended value; only compress punctuation-based citation forms below.
+  if (!/[./-]/u.test(trimmed)) return trimmed;
+
   // Turn common dotted forms (e.g. “J. Geophys. Res.”) into JGR.
   const parts = trimmed
     .normalize("NFKC")
@@ -123,9 +127,6 @@ export function getMinimalJournalAbbreviation(item: {
   }
   if (!title) return existing ? compactExistingAbbreviation(existing) : "";
 
-  const known = KNOWN_ABBREVIATIONS[normalizeJournalTitle(title)];
-  if (known) return known;
-
   const existingCandidate = isUsableExistingAbbreviation(existing, title)
     ? compactExistingAbbreviation(existing)
     : "";
@@ -135,6 +136,8 @@ export function getMinimalJournalAbbreviation(item: {
   // users may have curated a venue-specific form that is shorter or clearer
   // than generic initials (for example “J. Geophys. Res.” → “JGR”).
   if (existingCandidate) return existingCandidate;
+  const known = KNOWN_ABBREVIATIONS[normalizeJournalTitle(title)];
+  if (known) return known;
   if (generated.length >= 2) return generated;
   return existingCandidate || title;
 }

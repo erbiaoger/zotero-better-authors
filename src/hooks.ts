@@ -9,6 +9,7 @@ import { affiliationService } from "./affiliations/services/enrichmentService";
 import { registerAffiliationColumn } from "./affiliations/ui/columns";
 import { registerAffiliationMenus } from "./affiliations/ui/menu";
 import { registerJournalAbbreviationColumn } from "./journals/ui/column";
+import { registerJournalAbbreviationMenu } from "./journals/ui/menu";
 
 async function onStartup() {
   await Promise.all([
@@ -39,6 +40,7 @@ async function onMainWindowLoad(win: Window): Promise<void> {
   // Create ztoolkit for every window
   addon.data.ztoolkit = createZToolkit();
   registerAffiliationMenus();
+  registerJournalAbbreviationMenu();
 }
 
 async function onMainWindowUnload(win: Window): Promise<void> {

@@ -26,6 +26,7 @@ This is a simple plugin for [Zotero](https://www.zotero.org/) 7, 8, and 9.
 - **Cross-device mirror** A single `BetterAuthors-Affiliation:` JSON line in each editable item's Extra preserves the first-author result through Zotero sync. Other Extra content is retained.
 - **Chinese institution column** Optionally generate a second “第一作者机构（中文）” column. DeepSeek `deepseek-v4-flash` is called only from the explicit context-menu batch action; the API key stays local and translated names are cached.
 - **Minimal journal abbreviation** Add a separate “期刊简称（最简）” column. Common titles use compact mappings such as `Journal of Geophysical Research` → `JGR`; other titles use the local Zotero abbreviation or a deterministic initials fallback without changing the original item fields.
+- **Manual journal abbreviation** For an item that cannot be identified automatically, use the item context menu `期刊简称 → 手动设置期刊简称`. The value is saved to Zotero's standard `journalAbbreviation` field and takes priority in the plugin column.
 
 ### First-author institution setup
 
