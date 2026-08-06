@@ -13,7 +13,8 @@ export function parseExtraMirror(extra: unknown): { mirror: ExtraAffiliationMirr
   const conflicts: string[] = [];
   if (typeof extra !== "string") return { mirror: null, conflicts };
   const mirrors: ExtraAffiliationMirrorV1[] = [];
-  for (const line of extra.split(/\r?\n/)) {
+  for (const rawLine of extra.split(/\r?\n/)) {
+    const line = rawLine.trimStart();
     if (!line.startsWith(EXTRA_PREFIX)) continue;
     try {
       const value = JSON.parse(line.slice(EXTRA_PREFIX.length).trim());

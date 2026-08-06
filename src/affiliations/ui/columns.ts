@@ -12,9 +12,11 @@ export async function registerAffiliationColumn(): Promise<void> {
     pluginID: config.addonID,
     enabledTreeIDs: ["main"],
     width: "220px",
-    dataProvider: (item) => {
-      if (!(item instanceof Zotero.Item)) return "";
-      const record = affiliationService.getFirstAuthorRecordForItem(item);
+    dataProvider: (item: Zotero.Item | Zotero.Collection) => {
+      // Item-tree rows can come from another Zotero window realm, so avoid
+      // instanceof checks here. The synchronous column only needs getField.
+      if (!item || typeof (item as any).getField !== "function") return "";
+      const record = affiliationService.getFirstAuthorRecordForItem(item as Zotero.Item);
       const first = record?.authorships.find((a) => a.authorPosition === "first") || record?.authorships[0];
       return formatInstitutionColumn(first?.institutions || []);
     },

@@ -68,6 +68,7 @@ export class AffiliationServiceImpl {
    * cross-device fallback while the background hydrator catches up.
    */
   getFirstAuthorRecordForItem(item: Zotero.Item): FirstAuthorAffiliationRecord | null {
+    if (!item || typeof (item as any).getField !== "function") return null;
     const cached = this.getFirstAuthorRecord(item.libraryID, item.key);
     if (cached) return cached;
     const parsed = parseExtraMirror(item.getField("extra"));
