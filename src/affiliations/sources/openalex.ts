@@ -13,7 +13,9 @@ export class OpenAlexClient {
 
   async worksByDoi(dois: string[]): Promise<OpenAlexWork[]> {
     if (!dois.length) return [];
-    const filter = dois.map((doi) => `doi:${doi}`).join("|");
+    // OpenAlex's OR syntax repeats values after one filter field:
+    // `doi:value-a|value-b`, rather than `doi:value-a|doi:value-b`.
+    const filter = `doi:${dois.join("|")}`;
     const response = await this.http.request(this.url(`/works?filter=${encodeURIComponent(filter)}&per-page=50`));
     return response?.results || [];
   }

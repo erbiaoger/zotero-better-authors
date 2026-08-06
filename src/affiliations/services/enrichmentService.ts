@@ -52,6 +52,7 @@ export class AffiliationServiceImpl {
           if (index % 25 === 0) await new Promise((resolve) => setTimeout(resolve, 0));
         }
       }
+      Zotero.ItemTreeManager.refreshColumns();
     } catch (_e) { /* Zotero may still be opening a library during startup */ }
   }
 
@@ -151,6 +152,9 @@ export class AffiliationServiceImpl {
       else summary.noMatch += 1;
       progress.changeLine({ text: `已处理 ${summary.succeeded + summary.needsReview + summary.noMatch}/${summary.total}`, progress: Math.round(((summary.succeeded + summary.needsReview + summary.noMatch) / Math.max(1, summary.total)) * 100) });
     }
+    // Custom column dataProviders are synchronous; explicitly ask Zotero to
+    // repaint them after the asynchronous batch has populated the memory Map.
+    Zotero.ItemTreeManager.refreshColumns();
     progress.changeLine({ type: "success", text: `机构数据完成：成功 ${summary.succeeded}，待审核 ${summary.needsReview}`, progress: 100 }).startCloseTimer(5000);
     return batchID;
   }
