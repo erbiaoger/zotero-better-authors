@@ -158,6 +158,23 @@ export function inferInstitutionCountryCode(institution: InstitutionRecord): str
   return KNOWN_COUNTRIES[institution.name.trim().toLowerCase()];
 }
 
+/** Prefer a university/college as the compact primary label for multi-affiliation authors. */
+export function selectPrimaryInstitution(institutions: InstitutionRecord[]): InstitutionRecord | undefined {
+  return institutions
+    .map((institution, index) => ({ institution, index, score: institutionPriority(institution) }))
+    .sort((a, b) => b.score - a.score || a.index - b.index)[0]?.institution;
+}
+
+function institutionPriority(institution: InstitutionRecord): number {
+  const name = institution.name.toLowerCase();
+  if (institution.type === "education") return 100;
+  if (/\b(university|college|school|polytechnic|institute of technology)\b/.test(name)) return 90;
+  if (/\b(institute|academy)\b/.test(name)) return 55;
+  if (/\b(laboratory|laboratoire|research center|research centre|observatory|station|研究所|实验室)\b/.test(name)) return 25;
+  if (/\b(company|corporation|ltd|inc\.?|gmbh|aramco|bp)\b/.test(name)) return 15;
+  return 40;
+}
+
 export function translateInstitutionName(institution: InstitutionRecord): string {
   if (institution.nameZh?.trim()) return institution.nameZh.trim();
   const original = institution.name.trim();
@@ -170,7 +187,7 @@ export function translateInstitutionName(institution: InstitutionRecord): string
 
 export function formatInstitutionChineseColumn(institutions: InstitutionRecord[]): string {
   if (!institutions.length) return "";
-  const institution = institutions[0];
+  const institution = selectPrimaryInstitution(institutions) || institutions[0];
   const flag = countryCodeToFlag(inferInstitutionCountryCode(institution));
   const first = `${flag}${flag ? " " : ""}${translateInstitutionName(institution)}`;
   return institutions.length === 1 ? first : `${first} +${institutions.length - 1}`;

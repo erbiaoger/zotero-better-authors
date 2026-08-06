@@ -35,6 +35,7 @@ export interface InstitutionRecord {
   name: string;
   /** Optional local/manual Chinese display name; canonical `name` remains unchanged. */
   nameZh?: string;
+  type?: "education" | "facility" | "company" | "government" | "healthcare" | "other";
   countryCode?: string;
   latitude?: number;
   longitude?: number;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatInstitutionChineseColumn, translateInstitutionName } from "../../src/affiliations/institutionTranslation";
+import { formatInstitutionChineseColumn, selectPrimaryInstitution, translateInstitutionName } from "../../src/affiliations/institutionTranslation";
 
 const institution: any = (name: string, nameZh?: string) => ({ canonicalId: name, name, nameZh, rawAffiliations: [], source: "openalex", confidence: 1 });
 
@@ -14,5 +14,12 @@ describe("Chinese institution column", () => {
   it("keeps the same multi-institution +N display convention", () => {
     expect(formatInstitutionChineseColumn([institution("Tsinghua University"), institution("Stanford University")])).toBe("🇨🇳 清华大学 +1");
     expect(formatInstitutionChineseColumn([institution("University of Edinburgh")])).toBe("🇬🇧 爱丁堡大学");
+  });
+
+  it("prefers a university over a laboratory in multi-affiliation display", () => {
+    const lab = institution("State Key Laboratory of Deep Earth Exploration");
+    const university = { ...institution("Jilin University"), type: "education" };
+    expect(selectPrimaryInstitution([lab, university])?.name).toBe("Jilin University");
+    expect(formatInstitutionChineseColumn([lab, university])).toBe("🇨🇳 吉林大学 +1");
   });
 });

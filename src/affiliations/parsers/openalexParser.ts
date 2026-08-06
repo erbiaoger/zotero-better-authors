@@ -5,7 +5,7 @@ function institution(raw: any, source: "openalex" = "openalex"): InstitutionReco
   const ror = raw?.ror || raw?.ids?.ror;
   const canonicalId = ror || id || `raw:${String(raw?.display_name || "unknown").toLowerCase()}`;
   return { canonicalId, ror: ror || undefined, openAlexId: id || undefined, wikidata: raw?.ids?.wikidata || undefined,
-    name: raw?.display_name || raw?.name || "Unknown institution", countryCode: raw?.country_code || undefined,
+    name: raw?.display_name || raw?.name || "Unknown institution", type: raw?.type || undefined, countryCode: raw?.country_code || undefined,
     latitude: raw?.geo?.latitude, longitude: raw?.geo?.longitude, parentId: raw?.parent?.id || undefined,
     parentName: raw?.parent?.display_name || undefined, lineage: raw?.lineage || undefined,
     rawAffiliations: [], source, confidence: ror ? 1 : 0.96 };

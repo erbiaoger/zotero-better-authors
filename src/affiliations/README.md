@@ -18,3 +18,5 @@ DeepSeek 翻译是显式批处理，不会在列表滚动时调用 API。未配�
 `work_cache` 保存条目指纹、状态、作者关系和过期时间；`authorships`、`institutions` 和 `authorship_institutions` 保存完整的本地作者—机构图；`jobs` 和 `manual_overrides` 为可恢复批次与后续人工锁定预留。状态包括 `queued`、`running`、`succeeded`、`needs_review`、`no_match`、`failed` 和 `cancelled`。
 
 列渲染只读取内存 Map，不进行网络请求或 SQLite 异步查询。匹配使用 DOI 批量 OpenAlex，必要时回退 Crossref、标题候选和已有 PDF 的 GROBID；所有源调用均可在测试中替换为 fixture HTTP client。
+
+多机构作者的紧凑列显示优先选择 OpenAlex 标记为教育机构的高校；若缺少类型，则按名称识别 university、college、school、polytechnic 等教育机构。实验室、研究中心和公司不会被删除，只作为 `+N` 计数和详情中的其他机构保留。

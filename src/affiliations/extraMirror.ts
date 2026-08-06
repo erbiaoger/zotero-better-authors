@@ -1,6 +1,6 @@
 import type { ExtraAffiliationMirrorV1, FirstAuthorAffiliationRecord, InstitutionRecord } from "./types";
 import { countryCodeToFlag } from "./countryFlags";
-import { inferInstitutionCountryCode } from "./institutionTranslation";
+import { inferInstitutionCountryCode, selectPrimaryInstitution } from "./institutionTranslation";
 
 export { countryCodeToFlag } from "./countryFlags";
 
@@ -60,7 +60,8 @@ export function mirrorFromRecord(record: FirstAuthorAffiliationRecord): ExtraAff
 
 export function formatInstitutionColumn(institutions: InstitutionRecord[]): string {
   if (!institutions.length) return "";
-  const flag = countryCodeToFlag(inferInstitutionCountryCode(institutions[0]));
-  const first = `${flag}${flag ? " " : ""}${institutions[0].name}`;
+  const institution = selectPrimaryInstitution(institutions) || institutions[0];
+  const flag = countryCodeToFlag(inferInstitutionCountryCode(institution));
+  const first = `${flag}${flag ? " " : ""}${institution.name}`;
   return institutions.length === 1 ? first : `${first} +${institutions.length - 1}`;
 }
