@@ -185,6 +185,18 @@
     </hbox>
   </groupbox>
   <groupbox>
+    <label><html:h3>机构数据</html:h3></label>
+    <label>OpenAlex API Key（仅保存在本机）</label>
+    <html:input type="password" class="html-input" size="48" preference="openalex-api-key" />
+    <label>Crossref 联系邮箱（可选）</label>
+    <html:input type="email" class="html-input" size="48" preference="crossref-email" />
+    <label>GROBID URL</label>
+    <html:input type="url" class="html-input" size="48" preference="grobid-url" />
+    <checkbox preference="enable-grobid" label="启用本地 PDF 的 GROBID 回退" />
+    <checkbox preference="merge-parent-institution" label="地图默认合并唯一母机构" />
+    <checkbox preference="full-count" label="地图默认使用全计数" />
+  </groupbox>
+  <groupbox>
     <label>
       <html:h3 data-l10n-id="pref-label-about"></html:h3>
     </label>

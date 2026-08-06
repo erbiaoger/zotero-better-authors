@@ -18,6 +18,12 @@ declare namespace _ZoteroTypes {
       "sep-omitted-authors": string;
       "indicator-for-lastauthor": string;
       "indicator-position": string;
+      "openalex-api-key": string;
+      "crossref-email": string;
+      "grobid-url": string;
+      "enable-grobid": boolean;
+      "merge-parent-institution": boolean;
+      "full-count": boolean;
     };
   }
 }

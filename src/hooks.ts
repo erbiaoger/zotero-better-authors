@@ -5,6 +5,9 @@ import {
 import { initLocale } from "./utils/locale";
 import { registerPrefsScripts } from "./modules/preferenceScript";
 import { createZToolkit } from "./utils/ztoolkit";
+import { affiliationService } from "./affiliations/services/enrichmentService";
+import { registerAffiliationColumn } from "./affiliations/ui/columns";
+import { registerAffiliationMenus } from "./affiliations/ui/menu";
 
 async function onStartup() {
   await Promise.all([
@@ -18,8 +21,12 @@ async function onStartup() {
   // Register prefs
   BasicBetterAuthorsFactory.registerPrefs();
 
+  await affiliationService.init();
+  addon.api.affiliations = affiliationService;
+
   // Register extra column for item tree
   await UIBetterAuthorsFactory.registerExtraColumn();
+  await registerAffiliationColumn();
 
   await Promise.all(
     Zotero.getMainWindows().map((win) => onMainWindowLoad(win)),
@@ -29,6 +36,7 @@ async function onStartup() {
 async function onMainWindowLoad(win: Window): Promise<void> {
   // Create ztoolkit for every window
   addon.data.ztoolkit = createZToolkit();
+  registerAffiliationMenus();
 }
 
 async function onMainWindowUnload(win: Window): Promise<void> {
@@ -36,6 +44,7 @@ async function onMainWindowUnload(win: Window): Promise<void> {
 }
 
 function onShutdown(): void {
+  void affiliationService.shutdown();
   ztoolkit.unregisterAll();
   // Remove addon object
   addon.data.alive = false;

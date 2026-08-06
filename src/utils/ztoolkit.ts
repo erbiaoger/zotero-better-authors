@@ -1,4 +1,4 @@
-import { makeHelperTool, ProgressWindowHelper } from "zotero-plugin-toolkit";
+import { makeHelperTool, ProgressWindowHelper, MenuManager } from "zotero-plugin-toolkit";
 import { config } from "../../package.json";
 
 export { createZToolkit };
@@ -33,11 +33,13 @@ import { UITool } from "zotero-plugin-toolkit";
 class MyToolkit extends BasicTool {
   UI: UITool;
   ProgressWindow: typeof ProgressWindowHelper;
+  Menu: MenuManager;
 
   constructor() {
     super();
     this.UI = new UITool(this);
     this.ProgressWindow = makeHelperTool(ProgressWindowHelper, this);
+    this.Menu = new MenuManager(this);
   }
 
   unregisterAll() {

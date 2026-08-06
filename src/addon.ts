@@ -19,7 +19,7 @@ class Addon {
   // Lifecycle hooks
   public hooks: typeof hooks;
   // APIs
-  public api: object;
+  public api: any;
 
   constructor() {
     this.data = {
