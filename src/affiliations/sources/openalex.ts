@@ -15,7 +15,7 @@ export class OpenAlexClient {
     if (!dois.length) return [];
     // OpenAlex's OR syntax repeats values after one filter field:
     // `doi:value-a|value-b`, rather than `doi:value-a|doi:value-b`.
-    const filter = `doi:${dois.join("|")}`;
+    const filter = `doi:${dois.map((doi) => `https://doi.org/${doi}`).join("|")}`;
     const response = await this.http.request(this.url(`/works?filter=${encodeURIComponent(filter)}&per-page=50`));
     return response?.results || [];
   }

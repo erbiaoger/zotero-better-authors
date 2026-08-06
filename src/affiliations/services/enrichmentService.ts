@@ -62,6 +62,24 @@ export class AffiliationServiceImpl {
     return memory.get(keyFor(libraryID, itemKey)) || null;
   }
 
+  /**
+   * Synchronous item-tree lookup. The column must never perform network or
+   * SQLite I/O, but it can safely use the already-loaded Extra field as a
+   * cross-device fallback while the background hydrator catches up.
+   */
+  getFirstAuthorRecordForItem(item: Zotero.Item): FirstAuthorAffiliationRecord | null {
+    const cached = this.getFirstAuthorRecord(item.libraryID, item.key);
+    if (cached) return cached;
+    const parsed = parseExtraMirror(item.getField("extra"));
+    const identity = getItemIdentity(item);
+    if (!identity || !parsed.mirror) return null;
+    const first = { authorIndex: 0, authorName: identity.firstAuthor, authorPosition: "first" as const, institutions: parsed.mirror.institutions };
+    const record = recordFor(item, parsed.mirror.fingerprint, identity, [first], "succeeded", "extra-mirror", Math.max(...parsed.mirror.institutions.map((institution) => institution.confidence), 0), parsed.mirror.institutions[0]?.source);
+    record.manual = parsed.mirror.manual;
+    memory.set(keyFor(item.libraryID, item.key), record);
+    return record;
+  }
+
   async hydrateItem(item: Zotero.Item): Promise<void> {
     const identity = getItemIdentity(item);
     if (!identity) return;

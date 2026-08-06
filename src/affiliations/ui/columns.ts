@@ -13,7 +13,8 @@ export async function registerAffiliationColumn(): Promise<void> {
     enabledTreeIDs: ["main"],
     width: "220px",
     dataProvider: (item) => {
-      const record = affiliationService.getFirstAuthorRecord(item.libraryID, item.key);
+      if (!(item instanceof Zotero.Item)) return "";
+      const record = affiliationService.getFirstAuthorRecordForItem(item);
       const first = record?.authorships.find((a) => a.authorPosition === "first") || record?.authorships[0];
       return formatInstitutionColumn(first?.institutions || []);
     },
