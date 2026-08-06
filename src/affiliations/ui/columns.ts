@@ -13,8 +13,6 @@ export async function registerAffiliationColumn(): Promise<void> {
     enabledTreeIDs: ["main"],
     width: "240px",
     minWidth: 120,
-    fixedWidth: true,
-    staticWidth: true,
     dataProvider: (item: Zotero.Item | Zotero.Collection) => {
       // Item-tree rows can come from another Zotero window realm, so avoid
       // instanceof checks here. The synchronous column only needs getField.
