@@ -12,6 +12,8 @@ export async function registerAffiliationColumn(): Promise<void> {
     pluginID: config.addonID,
     enabledTreeIDs: ["main"],
     width: "220px",
+    minWidth: 120,
+    flex: 1,
     dataProvider: (item: Zotero.Item | Zotero.Collection) => {
       // Item-tree rows can come from another Zotero window realm, so avoid
       // instanceof checks here. The synchronous column only needs getField.
@@ -20,10 +22,18 @@ export async function registerAffiliationColumn(): Promise<void> {
       const first = record?.authorships.find((a) => a.authorPosition === "first") || record?.authorships[0];
       return formatInstitutionColumn(first?.institutions || []);
     },
-    renderCell: (_index, data, _column, _first, doc) => {
-      const element = doc.createElement("span");
+    renderCell: (_index, data, column, _first, doc) => {
+      // Zotero's item-tree renderer expects the standard `cell` class. If
+      // this class is omitted, long institution names escape the cell and
+      // visually cover neighbouring columns.
+      const element = doc.createElementNS("http://www.w3.org/1999/xhtml", "span");
+      element.className = `cell ${column.className}`;
       element.textContent = data;
-      element.setAttribute("title", data);
+      element.title = data;
+      element.style.display = "block";
+      element.style.overflow = "hidden";
+      element.style.textOverflow = "ellipsis";
+      element.style.whiteSpace = "nowrap";
       return element;
     },
   });
