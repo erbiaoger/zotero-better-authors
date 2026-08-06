@@ -33,6 +33,8 @@ export interface InstitutionRecord {
   wikidata?: string;
   isni?: string;
   name: string;
+  /** Optional local/manual Chinese display name; canonical `name` remains unchanged. */
+  nameZh?: string;
   countryCode?: string;
   latitude?: number;
   longitude?: number;
