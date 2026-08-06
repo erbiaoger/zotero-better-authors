@@ -26,7 +26,7 @@
     "build": "zotero-plugin build && tsc --noEmit",
     "lint": "prettier --write . && eslint . --fix",
     "release": "zotero-plugin release",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run",
     "update-deps": "pnpm up"
   },
   "dependencies": {
@@ -38,6 +38,7 @@
     "eslint": "^9.39.2",
     "prettier": "^3.7.4",
     "typescript": "^5.9.3",
+    "vitest": "^3.2.4",
     "zotero-plugin-scaffold": "^0.8.2",
     "zotero-types": "^4.1.0-beta.4"
   },
