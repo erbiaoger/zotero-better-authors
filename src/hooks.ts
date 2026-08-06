@@ -8,6 +8,7 @@ import { createZToolkit } from "./utils/ztoolkit";
 import { affiliationService } from "./affiliations/services/enrichmentService";
 import { registerAffiliationColumn } from "./affiliations/ui/columns";
 import { registerAffiliationMenus } from "./affiliations/ui/menu";
+import { registerJournalAbbreviationColumn } from "./journals/ui/column";
 
 async function onStartup() {
   await Promise.all([
@@ -27,6 +28,7 @@ async function onStartup() {
   // Register extra column for item tree
   await UIBetterAuthorsFactory.registerExtraColumn();
   await registerAffiliationColumn();
+  await registerJournalAbbreviationColumn();
 
   await Promise.all(
     Zotero.getMainWindows().map((win) => onMainWindowLoad(win)),

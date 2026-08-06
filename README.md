@@ -25,6 +25,7 @@ This is a simple plugin for [Zotero](https://www.zotero.org/) 7, 8, and 9.
 - **Offline institution map** Aggregate first-author institutions by country and coordinates, with full/fractional counting, conservative deduplication, and optional parent-institution merge. Chart text uses Times New Roman and no online map tiles are loaded.
 - **Cross-device mirror** A single `BetterAuthors-Affiliation:` JSON line in each editable item's Extra preserves the first-author result through Zotero sync. Other Extra content is retained.
 - **Chinese institution column** Optionally generate a second “第一作者机构（中文）” column. DeepSeek `deepseek-v4-flash` is called only from the explicit context-menu batch action; the API key stays local and translated names are cached.
+- **Minimal journal abbreviation** Add a separate “期刊简称（最简）” column. Common titles use compact mappings such as `Journal of Geophysical Research` → `JGR`; other titles use the local Zotero abbreviation or a deterministic initials fallback without changing the original item fields.
 
 ### First-author institution setup
 
