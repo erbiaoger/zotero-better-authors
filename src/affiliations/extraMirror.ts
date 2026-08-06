@@ -1,4 +1,8 @@
 import type { ExtraAffiliationMirrorV1, FirstAuthorAffiliationRecord, InstitutionRecord } from "./types";
+import { countryCodeToFlag } from "./countryFlags";
+import { inferInstitutionCountryCode } from "./institutionTranslation";
+
+export { countryCodeToFlag } from "./countryFlags";
 
 export const EXTRA_PREFIX = "BetterAuthors-Affiliation:";
 
@@ -56,13 +60,7 @@ export function mirrorFromRecord(record: FirstAuthorAffiliationRecord): ExtraAff
 
 export function formatInstitutionColumn(institutions: InstitutionRecord[]): string {
   if (!institutions.length) return "";
-  const first = `${countryCodeToFlag(institutions[0].countryCode)}${institutions[0].countryCode ? " " : ""}${institutions[0].name}`;
+  const flag = countryCodeToFlag(inferInstitutionCountryCode(institutions[0]));
+  const first = `${flag}${flag ? " " : ""}${institutions[0].name}`;
   return institutions.length === 1 ? first : `${first} +${institutions.length - 1}`;
-}
-
-/** Convert an ISO 3166-1 alpha-2 code to an emoji flag. */
-export function countryCodeToFlag(countryCode?: string): string {
-  const code = String(countryCode || "").trim().toUpperCase();
-  if (!/^[A-Z]{2}$/.test(code)) return "";
-  return String.fromCodePoint(...[...code].map((letter) => 127397 + letter.charCodeAt(0)));
 }
