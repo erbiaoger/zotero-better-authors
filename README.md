@@ -21,6 +21,13 @@ This is a simple plugin for [Zotero](https://www.zotero.org/) 7, 8, and 9.
   - Choose whether to display: first N authors (all or partial), and the second author
   - Customize the symbol(s) to separate authors (either in one author or between authors, _e. g._ `,` `;` ` `), and to indicate the second author (_e. g._ `*` `†` `‡` `⸸`)
   - Choose the name orders for displaying authors: `Firstname Lastname`, `Lastname Firstname`, or `auto (according to the language of the authors names)`
+- **First-author institutions** Manually enrich selected items or a library through OpenAlex, Crossref, and optional local GROBID. The result is shown in a synchronous item-tree column and a local institution dashboard; no network request is made while browsing or scrolling.
+- **Offline institution map** Aggregate first-author institutions by country and coordinates, with full/fractional counting, conservative deduplication, and optional parent-institution merge. Chart text uses Times New Roman and no online map tiles are loaded.
+- **Cross-device mirror** A single `BetterAuthors-Affiliation:` JSON line in each editable item's Extra preserves the first-author result through Zotero sync. Other Extra content is retained.
+
+### First-author institution setup
+
+Open the plugin preferences and configure an OpenAlex API Key (required for enrichment), an optional Crossref polite-pool email, and the local GROBID URL. Then use the item/collection context menu `机构数据` to start a batch. The independent cache and module documentation are in [`src/affiliations/README.md`](src/affiliations/README.md).
 
 ## Usage & Screenshots
 
