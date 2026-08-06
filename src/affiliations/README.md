@@ -7,8 +7,11 @@
 1. 在 Zotero 插件设置中填写 OpenAlex API Key；可选填写 Crossref 联系邮箱和 GROBID 地址。
 2. 在条目列表右键选择“机构数据 → 补齐选中条目”，或选择“补齐当前文库”。插件不会在导入或滚动列表时联网。
 3. 使用“打开机构地图”查看离线机构排行、国家统计和经纬度点位；地图只统计第一作者机构。
+4. 如需批量生成中文机构名，在设置页填写 DeepSeek API Key（模型默认 `deepseek-v4-flash`），然后选中文献右键选择“机构数据 → 用 DeepSeek 翻译中文机构名”。发送前会弹出确认；只发送待翻译的机构 ID 和名称，结果写入本地缓存和 Extra 镜像。
 
 本地缓存位于 Zotero 数据目录的 `better-authors.sqlite`。可写条目会额外保存一行 `BetterAuthors-Affiliation:` 镜像，以便 Zotero 同步到另一台设备后恢复列和地图。API Key 永不写入 SQLite、Extra 或日志。远程 GROBID 只有显式传入 `allowRemoteGrobid` 才会上传本地 PDF；默认地址为 loopback。
+
+DeepSeek 翻译是显式批处理，不会在列表滚动时调用 API。未配置 Key、网络失败或模型返回非法 JSON 时，原始机构名称会保留，已有中文名不会被覆盖。
 
 ## 数据结构
 

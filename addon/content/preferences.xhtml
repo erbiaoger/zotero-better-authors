@@ -195,6 +195,10 @@
     <checkbox preference="enable-grobid" label="启用本地 PDF 的 GROBID 回退" />
     <checkbox preference="merge-parent-institution" label="地图默认合并唯一母机构" />
     <checkbox preference="full-count" label="地图默认使用全计数" />
+    <label>DeepSeek API Key（用于机构中文名翻译，仅保存在本机）</label>
+    <html:input type="password" class="html-input" size="48" preference="deepseek-api-key" />
+    <label>DeepSeek 模型</label>
+    <html:input type="text" class="html-input" size="32" preference="deepseek-model" />
   </groupbox>
   <groupbox>
     <label>

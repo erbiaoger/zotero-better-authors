@@ -24,6 +24,8 @@ declare namespace _ZoteroTypes {
       "enable-grobid": boolean;
       "merge-parent-institution": boolean;
       "full-count": boolean;
+      "deepseek-api-key": string;
+      "deepseek-model": string;
     };
   }
 }

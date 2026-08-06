@@ -13,6 +13,16 @@ async function runSelected(force = false): Promise<void> {
   catch (error) { Zotero.getMainWindow().alert(String((error as Error).message || error)); }
 }
 
+async function translateSelectedChinese(): Promise<void> {
+  const ids = selectedIDs();
+  if (!ids.length) return Zotero.getMainWindow().alert("请先选择已经补齐机构数据的文献。");
+  if (!Zotero.getMainWindow().confirm("选中文献的机构名称将发送给 DeepSeek-v4-flash 进行中文翻译。是否继续？")) return;
+  try {
+    const result = await affiliationService.translateChineseNames(ids);
+    Zotero.getMainWindow().alert(`DeepSeek 中文翻译完成：${result.translated}/${result.requested} 个机构。`);
+  } catch (error) { Zotero.getMainWindow().alert(String((error as Error).message || error)); }
+}
+
 function allLibraryIDs(): number[] {
   const pane: any = Zotero.getActiveZoteroPane?.();
   return pane?.getSelectedLibraryID ? [] : [];
@@ -27,6 +37,7 @@ export function registerAffiliationMenus(): void {
   const children: any[] = [
     { tag: "menuitem", label: "补齐选中条目", commandListener: () => void runSelected(false) },
     { tag: "menuitem", label: "强制更新选中条目", commandListener: () => void runSelected(true) },
+    { tag: "menuitem", label: "用 DeepSeek 翻译中文机构名", commandListener: () => void translateSelectedChinese() },
     { tag: "menuitem", label: "补齐当前文库", commandListener: async () => { const pane: any = Zotero.getActiveZoteroPane?.(); const libraryID = pane?.getSelectedLibraryID?.(); if (libraryID) await affiliationService.enrichItems(await Zotero.Items.getAll(libraryID, true, false, true), { force: false, includeGrobid: true }); } },
     { tag: "menuitem", label: "补齐当前分类", commandListener: () => void runCollection() },
     { tag: "menuitem", label: "打开机构地图", commandListener: () => { const pane: any = Zotero.getActiveZoteroPane?.(); const collectionID = pane?.getSelectedCollection?.(true); openAffiliationDashboard(collectionID ? { kind: "collection", collectionID } : { kind: "library", libraryID: pane?.getSelectedLibraryID?.() }); } },

@@ -10,6 +10,7 @@ import { CrossrefClient } from "../sources/crossref";
 import { GrobidClient } from "../sources/grobid";
 import { zoteroHttpClient } from "../sources/http";
 import { OpenAlexClient } from "../sources/openalex";
+import { DeepSeekClient } from "../sources/deepseek";
 import { aggregateRecords } from "../analytics/stats";
 
 const memory = new Map<string, FirstAuthorAffiliationRecord>();
@@ -187,6 +188,43 @@ export class AffiliationServiceImpl {
   }
 
   getReviewCandidates(): ReviewCandidate[] { return [...reviews.values()]; }
+
+  /** Translate cached institution names explicitly requested by the user. */
+  async translateChineseNames(itemIDs: number[]): Promise<{ translated: number; requested: number }> {
+    await this.init();
+    const apiKey = String(getPref("deepseek-api-key") || "").trim();
+    if (!apiKey) throw new Error("DeepSeek API Key 未配置，请在设置页填写。");
+    const items = (Zotero.Items.get(itemIDs) as Zotero.Item[]).filter((item) => item && typeof (item as any).getField === "function");
+    const records = new Map<string, { item: Zotero.Item; record: FirstAuthorAffiliationRecord }>();
+    const unique = new Map<string, { id: string; name: string }>();
+    for (const item of items) {
+      const record = memory.get(keyFor(item.libraryID, item.key)) || this.getFirstAuthorRecordForItem(item);
+      if (!record) continue;
+      records.set(keyFor(item.libraryID, item.key), { item, record });
+      for (const authorship of record.authorships) for (const institution of authorship.institutions) {
+        if (!institution.nameZh?.trim()) unique.set(institution.canonicalId, { id: institution.canonicalId, name: institution.name });
+      }
+    }
+    const client = new DeepSeekClient(apiKey, zoteroHttpClient, String(getPref("deepseek-model") || "deepseek-v4-flash"));
+    const translated = new Map<string, string>();
+    const inputs = [...unique.values()];
+    for (let start = 0; start < inputs.length; start += 25) {
+      const result = await client.translateInstitutions(inputs.slice(start, start + 25));
+      for (const value of result) if (unique.has(value.id)) translated.set(value.id, value.nameZh);
+    }
+    if (!translated.size) return { translated: 0, requested: inputs.length };
+    for (const { item, record } of records.values()) {
+      for (const authorship of record.authorships) for (const institution of authorship.institutions) {
+        const nameZh = translated.get(institution.canonicalId);
+        if (nameZh) institution.nameZh = nameZh;
+      }
+      memory.set(keyFor(record.libraryID, record.itemKey), record);
+      await affiliationRepository.save(record);
+      await this.writeMirror(item, record);
+    }
+    Zotero.ItemTreeManager.refreshColumns();
+    return { translated: translated.size, requested: inputs.length };
+  }
 
   async clearRecords(libraryID?: number): Promise<void> {
     await affiliationRepository.clear(libraryID);

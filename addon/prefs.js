@@ -15,3 +15,5 @@ pref("grobid-url", "http://127.0.0.1:8070");
 pref("enable-grobid", true);
 pref("merge-parent-institution", true);
 pref("full-count", true);
+pref("deepseek-api-key", "");
+pref("deepseek-model", "deepseek-v4-flash");
